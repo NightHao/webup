@@ -15,26 +15,32 @@ func Parse(data []byte) string {
 
 	result := ""
 	for _, se := range doc.Body.Content {
-		if se.Paragraph.exists() {
+		if paragraph := se.Paragraph; paragraph != nil {
 			run := ""
-			for _, elem := range se.Paragraph.Elements {
-				if elem.TextRun.exists() {
-					text := elem.TextRun.Content
+			for _, elem := range paragraph.Elements {
+				if textRun := elem.TextRun; textRun != nil {
+					text := textRun.Content
 					text = strings.Replace(text, "\n", "<br />", -1)
 					text = strings.Replace(text, "\u000b", "<br />", -1)
-					if elem.TextRun.TextStyle.Bold {
+					if textRun.TextStyle.Bold {
 						text = "<b>" + text + "</b>"
 					}
-					if elem.TextRun.TextStyle.Italic {
+					if textRun.TextStyle.Italic {
 						text = "<i>" + text + "</i>"
 					}
-					if elem.TextRun.TextStyle.Underline {
+					if textRun.TextStyle.Underline {
 						text = "<u>" + text + "</u>"
 					}
 					run += "<span>" + text + "</span>"
+				} else if ioe := elem.InlineObjectElement; ioe != nil {
+					ioeKey := ioe.InlineObjectId
+					inlineObject := doc.InlineObjects[ioeKey]
+					if image := inlineObject.InlineObjectProperties.EmbeddedObject.ImageProperties; image != nil {
+						run += "<img src=\"" + image.ContentUri + "\" />"
+					}
 				}
 			}
-			switch se.Paragraph.ParagraphStyle.NamedStyleType {
+			switch paragraph.ParagraphStyle.NamedStyleType {
 			case "HEADING_1":
 				result += "<h1>" + run + "</h1>"
 			case "HEADING_2":

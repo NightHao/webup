@@ -11,16 +11,28 @@ TODOs:
 */
 
 type Document struct {
-	Body Body `json:"body"`
+	Body          Body                    `json:"body"`
+	InlineObjects map[string]InlineObject `json:"inlineObjects"`
 }
 
 type Body struct {
 	Content []StructuralElement `json:"content"`
 }
 
+type ImageProperties struct {
+	ContentUri string `json:"contentUri"`
+}
+
+type InlineObject struct {
+	InlineObjectProperties struct {
+		EmbeddedObject struct {
+			ImageProperties *ImageProperties `json:"imageProperties"`
+		}
+	} `json:"inlineObjectProperties"`
+}
+
 type StructuralElement struct {
-	Type      string
-	Paragraph Paragraph `json:"paragraph"`
+	Paragraph *Paragraph `json:"paragraph"`
 }
 
 type ParagraphStyle struct {
@@ -40,8 +52,8 @@ type Paragraph struct {
 }
 
 type ParagraphElement struct {
-	Type    string
-	TextRun TextRun `json:"textRun"`
+	TextRun             *TextRun             `json:"textRun"`
+	InlineObjectElement *InlineObjectElement `json:"inlineObjectElement"`
 }
 
 type TextStyle struct {
@@ -55,6 +67,10 @@ type TextRun struct {
 	TextStyle TextStyle `json:"textStyle"`
 }
 
+type InlineObjectElement struct {
+	InlineObjectId string `json:"inlineObjectId"`
+}
+
 /*
 How to handle bullets:
 1. Each bullet point is a paragraph
@@ -62,17 +78,4 @@ How to handle bullets:
 3. state machine approach: Iterate through SEs until a non-bullet is encountered
 3. dict approach: Append result to dict of HTMLElements according to their IDs (gen pseudo ID for non-IDed element)
 4. Lookup bullet styles from `lists`
-
-func (b *Bullet) exists() bool {
-	return b.ListId != ""
-}
-
 */
-
-func (tr *TextRun) exists() bool {
-	return len(tr.Content) > 0
-}
-
-func (paragraph *Paragraph) exists() bool {
-	return len(paragraph.Elements) > 0
-}
