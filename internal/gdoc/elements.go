@@ -1,12 +1,15 @@
 package gdoc
 
+import (
+	"fmt"
+)
+
 /*
 TODOs:
 1. Bullet
 2. Table
-3. Coloring
-4. Font size styling
-5. URL
+3. Font size styling
+4. URL
 */
 
 type Document struct {
@@ -64,10 +67,26 @@ type ParagraphElement struct {
 	InlineObjectElement *InlineObjectElement `json:"inlineObjectElement"`
 }
 
+type Color struct {
+	Color struct {
+		RGB struct {
+			Red   float64 `json:"red"`
+			Green float64 `json:"green"`
+			Blue  float64 `json:"blue"`
+		} `json:"rgbColor"`
+	} `json:"color"`
+}
+
+func (c Color) toCssRgb() string {
+	return fmt.Sprintf("rgb(%f, %f, %f)",
+		c.Color.RGB.Red*255, c.Color.RGB.Green*255, c.Color.RGB.Blue*255)
+}
+
 type TextStyle struct {
-	Bold      bool `json:"bold"`
-	Italic    bool `json:"italic"`
-	Underline bool `json:"underline"`
+	Bold            bool   `json:"bold"`
+	Italic          bool   `json:"italic"`
+	Underline       bool   `json:"underline"`
+	ForegroundColor *Color `json:"foregroundColor"`
 }
 
 type TextRun struct {

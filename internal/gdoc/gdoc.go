@@ -32,7 +32,11 @@ func Parse(data []byte) string {
 					if textRun.TextStyle.Underline {
 						text = "<u>" + text + "</u>"
 					}
-					run += "<span>" + text + "</span>"
+					style := ""
+					if c := textRun.TextStyle.ForegroundColor; c != nil {
+						style = " style=\"color: " + c.toCssRgb() + "\" "
+					}
+					run += "<span" + style + ">" + text + "</span>"
 				} else if ioe := elem.InlineObjectElement; ioe != nil {
 					ioeKey := ioe.InlineObjectId
 					inlineObject := doc.InlineObjects[ioeKey]
