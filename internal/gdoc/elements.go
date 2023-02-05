@@ -5,9 +5,8 @@ TODOs:
 1. Bullet
 2. Table
 3. Coloring
-4. Image
-5. Font size styling
-6. URL
+4. Font size styling
+5. URL
 */
 
 type Document struct {
