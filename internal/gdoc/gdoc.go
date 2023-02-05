@@ -2,6 +2,7 @@ package gdoc
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"strings"
 )
@@ -35,8 +36,12 @@ func Parse(data []byte) string {
 				} else if ioe := elem.InlineObjectElement; ioe != nil {
 					ioeKey := ioe.InlineObjectId
 					inlineObject := doc.InlineObjects[ioeKey]
-					if image := inlineObject.InlineObjectProperties.EmbeddedObject.ImageProperties; image != nil {
-						run += "<img src=\"" + image.ContentUri + "\" />"
+					embeddedObject := inlineObject.InlineObjectProperties.EmbeddedObject
+					if image := embeddedObject.ImageProperties; image != nil {
+						run += fmt.Sprintf("<img src=\"%s\" width=\"%f\" height=\"%f\"",
+							image.ContentUri, embeddedObject.Size.Width.Magnitude, embeddedObject.Size.Height.Magnitude)
+						run += "<img src=\"" + image.ContentUri + "\" "
+						run += "width="
 					}
 				}
 			}

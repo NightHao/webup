@@ -23,10 +23,19 @@ type ImageProperties struct {
 	ContentUri string `json:"contentUri"`
 }
 
+type UnitValue struct {
+	Magnitude float64 `json:"magnitude"`
+	Unit      string  `json:"unit"`
+}
+
 type InlineObject struct {
 	InlineObjectProperties struct {
 		EmbeddedObject struct {
 			ImageProperties *ImageProperties `json:"imageProperties"`
+			Size            struct {
+				Height UnitValue `json:"height"`
+				Width  UnitValue `json:"width"`
+			} `json:"size"`
 		}
 	} `json:"inlineObjectProperties"`
 }
