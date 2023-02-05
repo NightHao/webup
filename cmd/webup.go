@@ -25,12 +25,16 @@ func main() {
 	e.GET("/:id/", func(c echo.Context) error {
 		id := c.Param("id")
 		raw, err := gdoc.Request(id)
+		if err == nil {
+			err = gdoc.CheckError(raw)
+		}
 		if err != nil {
 			c.Logger().Error(err)
 			_ = c.String(http.StatusBadGateway, "error")
 			return err
 		}
-		return c.HTML(http.StatusOK, gdoc.Parse(raw))
+		result, _ := gdoc.Parse(raw)
+		return c.HTML(http.StatusOK, result)
 	})
 
 	e.Logger.Fatal(e.Start(os.Getenv("LISTEN")))

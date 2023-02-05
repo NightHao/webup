@@ -2,16 +2,37 @@ package gdoc
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"log"
 	"strings"
 )
 
-func Parse(data []byte) string {
+type ErrorDoc struct {
+	Err *struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+		Status  string `json:"status"`
+	} `json:"error"`
+}
+
+func CheckError(data []byte) error {
+	edoc := ErrorDoc{}
+	err := json.Unmarshal(data, &edoc)
+	if err != nil {
+		return err
+	}
+	if e := edoc.Err; e != nil {
+		return errors.New(fmt.Sprintf("%d %s: %s",
+			e.Code, e.Status, e.Message))
+	}
+	return nil
+}
+
+func Parse(data []byte) (string, error) {
 	doc := Document{}
 	err := json.Unmarshal(data, &doc)
 	if err != nil {
-		log.Fatalln(err)
+		return "", err
 	}
 
 	result := ""
@@ -66,5 +87,5 @@ func Parse(data []byte) string {
 		}
 	}
 
-	return "<html><body>" + result + "</body></html>"
+	return "<html><body>" + result + "</body></html>", nil
 }

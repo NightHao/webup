@@ -16,7 +16,11 @@ func main() {
 		log.Fatalln(err)
 	}
 	os.WriteFile("dump2.json", raw, 0666)
-	if err := os.WriteFile("out.html", []byte(gdoc.Parse(raw)), 0666); err != nil {
+	result, err := gdoc.Parse(raw)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if err := os.WriteFile("out.html", []byte(result), 0666); err != nil {
 		log.Fatalln(err)
 	}
 }
