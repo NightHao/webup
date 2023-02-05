@@ -9,7 +9,6 @@ TODOs:
 1. Bullet
 2. Table
 3. Font size styling
-4. URL
 */
 
 type Document struct {
@@ -82,11 +81,16 @@ func (c Color) toCssRgb() string {
 		c.Color.RGB.Red*255, c.Color.RGB.Green*255, c.Color.RGB.Blue*255)
 }
 
+type Link struct {
+	Url string `json:"url"`
+}
+
 type TextStyle struct {
 	Bold            bool   `json:"bold"`
 	Italic          bool   `json:"italic"`
 	Underline       bool   `json:"underline"`
 	ForegroundColor *Color `json:"foregroundColor"`
+	Link            *Link  `json:"link"`
 }
 
 type TextRun struct {

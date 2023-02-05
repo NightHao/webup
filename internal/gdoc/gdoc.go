@@ -32,6 +32,10 @@ func Parse(data []byte) string {
 					if textRun.TextStyle.Underline {
 						text = "<u>" + text + "</u>"
 					}
+					if link := textRun.TextStyle.Link; link != nil {
+						text = fmt.Sprintf("<a href=\"%s\">%s</a>",
+							link.Url, text)
+					}
 					style := ""
 					if c := textRun.TextStyle.ForegroundColor; c != nil {
 						style = " style=\"color: " + c.toCssRgb() + "\" "
