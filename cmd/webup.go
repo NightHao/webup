@@ -1,48 +1,37 @@
 package main
 
 import (
-	"context"
-	"golang.org/x/oauth2/google"
-	"log"
-	"webup/internal/gdoc"
-
-	"io"
 	"net/http"
 	"os"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
+
+	"webup/internal/gdoc"
 )
 
-func clientMustFromFile(fn string) *http.Client {
-	cred, err := os.ReadFile(fn)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	conf, err := google.JWTConfigFromJSON(cred, "https://www.googleapis.com/auth/documents.readonly")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	return conf.Client(context.Background())
-}
-
-func request(id string) []byte {
-	client := clientMustFromFile("cred.json")
-	req, _ := http.NewRequest("GET", "https://docs.googleapis.com/v1/documents/"+id, nil)
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	defer resp.Body.Close()
-	body, _ := io.ReadAll(resp.Body)
-	return body
-}
-
 func main() {
-	//raw, _ := os.ReadFile("dump2.json")
-	//https://elitesports.tcus.edu.tw/project/0813AIEvent.html
-	id := "1zDMdNztd20tlLttEWEBuYOTH6-qUSmgMiZmykmMfjhQ"
-	raw := request(id)
-	os.WriteFile("dump2.json", raw, 0666)
-	if err := os.WriteFile("out.html", []byte(gdoc.Parse(raw)), 0666); err != nil {
-		log.Fatalln(err)
-	}
+	// ensure we can instantiate a HttpClient
+	gdoc.ClientMustFromFile("cred.json")
+
+	e := echo.New()
+	e.Logger.SetLevel(log.INFO)
+	e.Logger.(*log.Logger).SetHeader("${time_rfc3339} ${level} ${short_file}:L${line} ${message}")
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "${time_rfc3339} ${latency_human} ${status} ${method} ${uri} err=\"${error}\"\n",
+	}))
+
+	e.GET("/:id/", func(c echo.Context) error {
+		id := c.Param("id")
+		raw, err := gdoc.Request(id)
+		if err != nil {
+			c.Logger().Error(err)
+			_ = c.String(http.StatusBadGateway, "error")
+			return err
+		}
+		return c.HTML(http.StatusOK, gdoc.Parse(raw))
+	})
+
+	e.Logger.Fatal(e.Start(os.Getenv("LISTEN")))
 }
