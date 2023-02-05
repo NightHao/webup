@@ -6,7 +6,6 @@ import (
 	"log"
 	"webup/internal/gdoc"
 
-	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -24,9 +23,7 @@ func clientMustFromFile(fn string) *http.Client {
 	return conf.Client(context.Background())
 }
 
-func request(id string) {
-	//id := "1zDMdNztd20tlLttEWEBuYOTH6-qUSmgMiZmykmMfjhQ"
-
+func request(id string) []byte {
 	client := clientMustFromFile("cred.json")
 	req, _ := http.NewRequest("GET", "https://docs.googleapis.com/v1/documents/"+id, nil)
 	resp, err := client.Do(req)
@@ -36,10 +33,16 @@ func request(id string) {
 
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
-	fmt.Println(string(body))
+	return body
 }
 
 func main() {
-	raw, _ := os.ReadFile("dump.json")
-	gdoc.Parse(raw)
+	raw, _ := os.ReadFile("dump2.json")
+	//https://elitesports.tcus.edu.tw/project/0813AIEvent.html
+	//id := "1zDMdNztd20tlLttEWEBuYOTH6-qUSmgMiZmykmMfjhQ"
+	//raw := request(id)
+	//os.WriteFile("dump2.json", raw, 0666)
+	if err := os.WriteFile("out.html", []byte(gdoc.Parse(raw)), 0666); err != nil {
+		log.Fatalln(err)
+	}
 }

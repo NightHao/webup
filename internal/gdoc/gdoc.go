@@ -12,9 +12,11 @@ func Parse(data []byte) string {
 		log.Fatalln(err)
 	}
 
+	result := ""
 	for _, se := range doc.Body.Content {
 		se.setType()
-		se.print()
+		result += se.toHTML()
+		// se.print()
 	}
-	return ""
+	return "<html><body>" + result + "</body></html>"
 }
