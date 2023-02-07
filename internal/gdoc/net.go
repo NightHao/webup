@@ -15,7 +15,9 @@ func ClientMustFromFile(fn string) *http.Client {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	conf, err := google.JWTConfigFromJSON(cred, "https://www.googleapis.com/auth/documents.readonly")
+	conf, err := google.JWTConfigFromJSON(cred,
+		"https://www.googleapis.com/auth/documents.readonly",
+		"https://www.googleapis.com/auth/drive.metadata.readonly")
 	if err != nil {
 		log.Fatalln(err)
 	}
