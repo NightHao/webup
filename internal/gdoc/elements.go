@@ -86,11 +86,12 @@ type Link struct {
 }
 
 type TextStyle struct {
-	Bold            bool   `json:"bold"`
-	Italic          bool   `json:"italic"`
-	Underline       bool   `json:"underline"`
-	ForegroundColor *Color `json:"foregroundColor"`
-	Link            *Link  `json:"link"`
+	Bold            bool       `json:"bold"`
+	Italic          bool       `json:"italic"`
+	Underline       bool       `json:"underline"`
+	ForegroundColor *Color     `json:"foregroundColor"`
+	Link            *Link      `json:"link"`
+	Fontsize        *UnitValue `json:"fontSize"`
 }
 
 type TextRun struct {

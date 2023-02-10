@@ -38,6 +38,9 @@ func Parse(data []byte) (string, error) {
 	result := ""
 	for _, se := range doc.Body.Content {
 		if paragraph := se.Paragraph; paragraph != nil {
+			//fmt.Println(paragraph)
+			//fmt.Println(paragraph.Elements)
+			//fmt.Println()
 			run := ""
 			for _, elem := range paragraph.Elements {
 				if textRun := elem.TextRun; textRun != nil {
@@ -57,20 +60,24 @@ func Parse(data []byte) (string, error) {
 						text = fmt.Sprintf("<a href=\"%s\">%s</a>",
 							link.Url, text)
 					}
-					style := ""
+					style := " style="
 					if c := textRun.TextStyle.ForegroundColor; c != nil {
-						style = " style=\"color: " + c.toCssRgb() + "\" "
+						style += " \"color: " + c.toCssRgb() + "\";"
 					}
+					if size := textRun.TextStyle.Fontsize; size != nil {
+						style += fmt.Sprintf("\"font-size: %dpx \"", int(size.Magnitude))
+					} else {
+						style += "\"font-size: 11px \""
+					}
+					fmt.Println(style)
 					run += "<span" + style + ">" + text + "</span>"
 				} else if ioe := elem.InlineObjectElement; ioe != nil {
 					ioeKey := ioe.InlineObjectId
 					inlineObject := doc.InlineObjects[ioeKey]
 					embeddedObject := inlineObject.InlineObjectProperties.EmbeddedObject
 					if image := embeddedObject.ImageProperties; image != nil {
-						run += fmt.Sprintf("<img src=\"%s\" width=\"%f\" height=\"%f\"",
+						run += fmt.Sprintf("<img src=\"%s\" width=\"%f\" height=\"%f\">",
 							image.ContentUri, embeddedObject.Size.Width.Magnitude, embeddedObject.Size.Height.Magnitude)
-						run += "<img src=\"" + image.ContentUri + "\" "
-						run += "width="
 					}
 				}
 			}
