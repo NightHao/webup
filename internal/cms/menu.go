@@ -7,28 +7,34 @@ import (
 )
 
 type MenuItem struct {
-	//	LabelEN string `json:"labelEN"`
-	LabelTW string `json:"labelTW"`
-	Link    string `json:"link"`
+	Label string `json:"label"`
+	Link  string `json:"link"`
 }
 
-func GetMenu(id string) ([]MenuItem, error) {
-	raw, err := gsheet.Request(id, "A1:B100")
+func GetMenu(id string) (map[string][]MenuItem, error) {
+	raw, err := gsheet.Request(id, "A1:C100")
 	if err != nil {
 		log.Fatalln(err)
 	}
 	val := gsheet.ValueRange{}
 	err = json.Unmarshal(raw, &val)
 	if err != nil {
-		return []MenuItem{}, err
+		return map[string][]MenuItem{}, err
 	}
 
-	items := make([]MenuItem, len(val.Values))
+	items := make(map[string][]MenuItem, 2)
+	items["en"] = make([]MenuItem, len(val.Values))
+	items["zh"] = make([]MenuItem, len(val.Values))
+
 	for i, item := range val.Values {
 		// assert item length
-		items[i] = MenuItem{
-			LabelTW: item[0],
-			Link:    item[1],
+		items["en"][i] = MenuItem{
+			Label: item[2],
+			Link:  item[0],
+		}
+		items["zh"][i] = MenuItem{
+			Label: item[1],
+			Link:  item[0],
 		}
 	}
 	return items, nil
