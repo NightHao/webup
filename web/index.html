@@ -68,7 +68,7 @@
                     <button type="button" data-toggle="collapse" data-target=".navigation" class="navbar-toggle edugate-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                 </div>
                 <nav class="navigation collapse navbar-collapse pull-right">
-                    <ul class="nav-links nav navbar-nav">
+                    <ul id="menu" class="nav-links nav navbar-nav">
                         <li ><a href="index.html" class="main-menu">Home<span></span></a>
                         </li>
 
@@ -351,6 +351,27 @@
 <script src="assets/libs/isotope/isotope.pkgd.min.js"></script>
 <script src="assets/libs/isotope/fit-columns.js"></script>
 <script src="assets/js/pages/homepage.js"></script>
+
+<script>
+    async function load(lang)
+    {
+        const api = window.location.protocol + "//" + window.location.host + ":6101";
+        const menuUI = document.getElementById("menu");
+        const menu = await (await fetch(api + "/cms/menu/" + lang)).json();
+        menu.forEach(item => {
+            const link = document.createElement("a");
+            link.href = item.link;
+            link.innerText = item.label;
+            link.className = "main-menu";
+            const li = document.createElement("li");
+            li.appendChild(link);
+            menuUI.appendChild(li);
+        });
+    }
+    window.addEventListener("load", async () => {
+        await load("en");
+    });
+</script>
 
 <footer style="text-align: center;color: white;background-color: black;padding: 30px;">
   <p>&#169; 2018 IDEA Lab. All Rights Reserved.</p>
