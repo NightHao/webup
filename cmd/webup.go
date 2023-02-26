@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"webup/internal/cms"
 	"webup/internal/gdrive"
 
 	"github.com/labstack/echo/v4"
@@ -18,6 +19,7 @@ func main() {
 	gdoc.ClientMustFromFile("cred.json")
 
 	defaultFolder := "1GXeYQOvNvDvqhtSZW4mOhJCBgcG-d_6r"
+	cmsId := "12CkaxfCn4RMs1gmt3tJxtYq-As0F22ssP6XndGhWDsY"
 
 	e := echo.New()
 	e.Logger.SetLevel(log.INFO)
@@ -56,6 +58,25 @@ func main() {
 		result, _ := gdoc.Parse(raw)
 		return c.HTML(http.StatusOK, result)
 	})
+
+	c := e.Group("/cms")
+	c.GET("/menu/:lang", func(c echo.Context) error {
+		lang := c.Param("lang")
+
+		items, err := cms.GetMenu(cmsId)
+		if err != nil {
+			c.Logger().Error(err)
+			_ = c.String(http.StatusBadGateway, "error")
+			return err
+		}
+
+		return c.JSON(http.StatusOK, items[lang])
+	})
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*://idea.cs.nthu.edu.tw"},
+		//AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 
 	e.Logger.Fatal(e.Start(os.Getenv("LISTEN")))
 }
