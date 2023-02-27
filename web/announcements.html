@@ -51,15 +51,45 @@
         </div>
     </div>
 </header>
-<div>
-    <p class="introduction" style="margin: 0;">
-    </p>
-</div>
+<section>
+    <table id="announcements">
+        <!-- added when onLoad -->
+    </table>
+</section>
+<style>
+    section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 8% 16%;
+        font-size: 20px;
+
+        color: white;
+        background-color: #242c42;
+    }
+
+    section a:visited, section a {
+        color: white;
+        font-weight: bold;
+    }
+
+    #announcements, #announcements tr, #announcements td {
+        border: solid 1px white;
+        border-collapse: collapse;
+    }
+
+    #announcements td {
+        padding: 2%;
+    }
+</style>
 <footer style="text-align: center;color: white;background-color: black;padding: 30px;">
     <p>&#169; 2018 IDEA Lab. All Rights Reserved.</p>
     Contact: <a href="mailto:ai.tw@gapp.nthu.edu.tw">ai.tw@gapp.nthu.edu.tw</a>
 </footer>
 <script>
+    const api = window.location.protocol + "//" + window.location.host + ":6101";
+
     let lang;
 
     function addMenuItem(parent, item) {
@@ -149,7 +179,6 @@
     }
 
     async function load() {
-        const api = window.location.protocol + "//" + window.location.host + ":6101";
         const menu = await (await fetch(api + "/cms/menu/" + lang)).json();
         const menuUI = document.getElementById("menu");
         addLegacyMenu(menuUI);
@@ -164,6 +193,20 @@
         const langParam = (new URL(window.location)).searchParams.get("lang");
         lang = langParam ? langParam : "en";
         await load(lang);
+
+        const announcements = document.getElementById("announcements");
+        (await (await fetch(api + "/announcements/")).json()).forEach(item => {
+            const sp = new URLSearchParams(window.location.search);
+            sp.set("id", item.id);
+            const tr = document.createElement("tr");
+            announcements.appendChild(tr);
+            const td = document.createElement("td");
+            tr.appendChild(td);
+            const a = document.createElement("a");
+            a.href = "announcement.html?" + sp.toString();
+            a.innerText = item.label;
+            td.appendChild(a);
+        });
     });
 </script>
 </body>
