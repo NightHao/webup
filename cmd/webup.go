@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"webup/internal/cms"
@@ -13,6 +12,11 @@ import (
 
 	"webup/internal/gdoc"
 )
+
+type Item struct {
+	Id    string `json:"id"`
+	Label string `json:"label"`
+}
 
 func main() {
 	// ensure we can instantiate a HttpClient
@@ -28,7 +32,7 @@ func main() {
 		Format: "${time_rfc3339} ${latency_human} ${status} ${method} ${uri} err=\"${error}\"\n",
 	}))
 
-	e.GET("/", func(c echo.Context) error {
+	e.GET("/announcements/", func(c echo.Context) error {
 		files, err := gdrive.List(defaultFolder)
 		if err != nil {
 			c.Logger().Error(err)
@@ -36,12 +40,14 @@ func main() {
 			return err
 		}
 
-		resp := "<html><body><ul>"
-		for _, file := range files {
-			resp += fmt.Sprintf("<li><a href=\"%s/\">%s</a></li>", file.Id, file.Name)
+		items := make([]Item, len(files))
+		for i, file := range files {
+			items[i] = Item{
+				Id:    file.Id,
+				Label: file.Name,
+			}
 		}
-		resp += "</ul></body></html>"
-		return c.HTML(http.StatusOK, resp)
+		return c.JSON(http.StatusOK, items)
 	})
 
 	e.GET("/:id/", func(c echo.Context) error {
@@ -75,7 +81,6 @@ func main() {
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*://idea.cs.nthu.edu.tw"},
-		//AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 
 	e.Logger.Fatal(e.Start(os.Getenv("LISTEN")))
