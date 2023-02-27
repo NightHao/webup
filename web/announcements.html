@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +23,9 @@
                 <div class="logo pull-left"><a href="index.html"><img
                         src="assets/images/250px-ROC_Ministry_of_Education_Seal.svg" width="40" height="40"
                         style="position:absolute;left:50px; top:6px;" alt=""/></a></div>
-                <div class="logo pull-left"><a href="index.html" style="position:absolute;left:100px;">Artificial
-                    Intelligence Talent Cultivation Project</a></div>
+                <div class="logo pull-left"><a href="index.html" id="logoText" style="position:absolute;left:100px;">
+                    <!-- added by load() -->
+                </a></div>
                 <div class="group-sign-in"><a href="index.html" style=>English&nbsp&nbsp</a>|<a
                         href="index-chinese.html" style="font-family: Microsoft JhengHei!important;">&nbsp&nbsp中文</a>
                 </div>
@@ -34,7 +35,7 @@
     <div class="header-main homepage-01">
         <div class="container">
             <div class="header-main-wrapper">
-                <div class="navbar-heade">
+                <div class="navbar-header">
                     <div class="logo pull-left"><a href="index.html" class="header-logo"><img
                             src="assets/images/logo1.png" alt=""/></a></div>
                     <button type="button" data-toggle="collapse" data-target=".navigation"
@@ -43,15 +44,7 @@
                 </div>
                 <nav class="navigation collapse navbar-collapse pull-right">
                     <ul id="menu" class="nav-links nav navbar-nav">
-                        <li><a href="index.html" class="main-menu">Home</a></li>
-                        <li><a href="courses.html" class="main-menu">Courses</a></li>
-                        <li class="dropdown"><a href="javascript:void(0)" class="main-menu">Roadmap<span
-                                class="fa fa-angle-down icons-dropdown"></span></a>
-                            <ul class="dropdown-menu edugate-dropdown-menu-1">
-                                <li><a href="roadmap-static.html" class="link-page">Static Roadmap</a></li>
-                                <li><a href="roadmap-interactive.html" class="link-page">Interactive Roadmap</a></li>
-                            </ul>
-                        </li>
+                        <!-- added by load() -->
                     </ul>
                 </nav>
             </div>
@@ -67,23 +60,110 @@
     Contact: <a href="mailto:ai.tw@gapp.nthu.edu.tw">ai.tw@gapp.nthu.edu.tw</a>
 </footer>
 <script>
-    async function load(lang) {
-        const api = window.location.protocol + "//" + window.location.host + ":6101";
-        const menuUI = document.getElementById("menu");
-        const menu = await (await fetch(api + "/cms/menu/" + lang)).json();
-        menu.forEach(item => {
-            const link = document.createElement("a");
-            link.href = item.link;
-            link.innerText = item.label;
-            link.className = "main-menu";
-            const li = document.createElement("li");
-            li.appendChild(link);
-            menuUI.appendChild(li);
+    let lang;
+
+    function addMenuItem(parent, item) {
+        const link = document.createElement("a");
+        link.href = item.link;
+        link.innerText = item.label;
+        link.className = "main-menu";
+        const li = document.createElement("li");
+        li.appendChild(link);
+        parent.appendChild(li);
+        return { // returning the element for legacy customisation
+            li: li,
+            a: link,
+        };
+    }
+
+    function addLegacyMenu(parent) {
+        const items = lang === "en" ?
+            [
+                {
+                    label: "HOME",
+                    link: "index.html",
+                },
+                {
+                    label: "COURSES",
+                    link: "courses.html",
+                },
+                {
+                    label: "ROADMAP",
+                    dropdown: [
+                        {
+                            label: "Static Roadmap",
+                            link: "roadmap-static.html",
+                        },
+                        {
+                            label: "Interactive Roadmap",
+                            link: "roadmap-interactive.html",
+                        },
+                    ]
+                },
+            ] :
+            [
+                {
+                    label: "首頁",
+                    link: "index-chinese.html",
+                },
+                {
+                    label: "課程",
+                    link: "courses-chinese.html",
+                },
+                {
+                    label: "課程地圖",
+                    dropdown: [
+                        {
+                            label: "靜態式地圖",
+                            link: "roadmap-static-chinese.html",
+                        },
+                        {
+                            label: "互動式地圖",
+                            link: "roadmap-interactive-chinese.html",
+                        },
+                        {
+                            label: "AI系列課程",
+                            link: "roadmap-course-series-chinese.html",
+                        },
+                    ]
+                },
+            ];
+
+        addMenuItem(parent, items[0]);
+        addMenuItem(parent, items[1]);
+        const dropdown = addMenuItem(parent, items[2]);
+        dropdown.li.className = "dropdown";
+        dropdown.a.className = "main-menu";
+        dropdown.a.href = "javascript:void(0)";
+        const arrow = document.createElement("span");
+        arrow.className = "fa fa-angle-down icons-dropdown";
+        dropdown.a.appendChild(arrow);
+        const sub = document.createElement("ul");
+        sub.className = "dropdown-menu edugate-dropdown-menu-1";
+        items[2].dropdown.forEach(subItem => {
+            const elem = addMenuItem(sub, subItem);
+            elem.li.className = "";
+            elem.a.className = "link-page";
         });
+        dropdown.li.appendChild(sub);
+    }
+
+    async function load() {
+        const api = window.location.protocol + "//" + window.location.host + ":6101";
+        const menu = await (await fetch(api + "/cms/menu/" + lang)).json();
+        const menuUI = document.getElementById("menu");
+        addLegacyMenu(menuUI);
+        menu.forEach(item => addMenuItem(menuUI, item));
+
+        document.getElementById("logoText").innerText = lang === "en" ?
+            "Artificial Intelligence Talent Cultivation Project" :
+            "教育部人工智慧技術及應用人才培育計畫";
     }
 
     window.addEventListener("load", async () => {
-        await load("en");
+        const langParam = (new URL(window.location)).searchParams.get("lang");
+        lang = langParam ? langParam : "en";
+        await load(lang);
     });
 </script>
 </body>
