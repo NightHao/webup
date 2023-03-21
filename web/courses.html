@@ -1189,7 +1189,7 @@
         empty: `<div class="hyperlink" style="padding:20px"><div class="text-center">No Results</div></div>`,
         item: 
 		`
-        <div class="col-style">
+        <div class="col-style" style="display: {{disablerStyle}}">
             <div class="edugate-layout-2">
                 <div class="edugate-layout-2-wrapper">
                     <div class="edugate-content">
@@ -1226,6 +1226,7 @@
             hit.cDirectLink = hit.cDirectLink == null ? "#" : hit.cDirectLink;
             
             hit.cPhotoLink = (hit.cPhotoLink == null || hit.cPhotoLink == "" )? "assets/images/categories/categories-default.png" : hit.cPhotoLink
+            hit.disablerStyle = hit.isDisabled === "disabled" ? "none" : "block";
             return hit;
         }
       }
