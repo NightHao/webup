@@ -52,9 +52,9 @@
     </div>
 </header>
 <section>
-    <table id="announcements">
+    <div id="announcement">
         <!-- added when onLoad -->
-    </table>
+    </div>
 </section>
 <style>
     section {
@@ -64,9 +64,6 @@
 
         padding: 8% 16%;
         font-size: 20px;
-
-        color: white;
-        background-color: #242c42;
     }
 
     section a:visited, section a {
@@ -90,23 +87,13 @@
 <script src="common.js"></script>
 <script>
     window.addEventListener("load", async () => {
-        const langParam = (new URL(window.location)).searchParams.get("lang");
+        const sp = (new URL(window.location)).searchParams;
+        const langParam = sp.get("lang");
         lang = langParam ? langParam : "en";
         await load(lang);
 
-        const announcements = document.getElementById("announcements");
-        (await (await fetch(api + "/announcements/")).json()).forEach(item => {
-            const sp = new URLSearchParams(window.location.search);
-            sp.set("id", item.id);
-            const tr = document.createElement("tr");
-            announcements.appendChild(tr);
-            const td = document.createElement("td");
-            tr.appendChild(td);
-            const a = document.createElement("a");
-            a.href = "announcement.html?" + sp.toString();
-            a.innerText = item.label;
-            td.appendChild(a);
-        });
+        const doc = await (await fetch(api + "/" + sp.get("id") + "/")).text();
+        document.getElementById("announcement").innerHTML = doc;
     });
 </script>
 </body>
