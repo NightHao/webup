@@ -380,18 +380,11 @@
                                                 <input type='checkbox' id="checkbox_Coursera">
                                                     <span class="label label-success">Coursera</span>
                                                 </input>
-                                                <input type='checkbox' id="checkbox_TaiwanMOOC">
-                                                    <span class="label label-success">TaiwanMOOC</span>
-                                                </input>
                                                 <input type='checkbox' id="checkbox_eWant">
                                                     <span class="label label-success">eWant</span>
                                                 </input>                                                
 												<input type='checkbox' id="checkbox_Oxford">
                                                     <span class="label label-success">Oxford</span>
-                                                </input>
-										
-                                                <input type='checkbox' id="checkbox_Taiwan" style="margin-left: 50px;">
-                                                    <span class="label label-default">Offline Taiwan Courses</span>
                                                 </input>
                                                 <!-- <button onclick="applyFilter()">Apply</button> -->
                                             </div>
@@ -839,6 +832,9 @@
     //var url = new URL(window.location.href);
     //var filterParam = url.searchParams.get("filter");
 
+    let cond = "NOT cProvider:TaiwanSchool AND NOT cProvider:TaiwanMOOC";
+    let fp =  filterParam == null ? cond : filterParam + " AND " + cond;
+
     var search = instantsearch({
       appId: 'S6JPUR2CPG',
       apiKey: '4d983d988bbcb8b7185ff63ec5c70b99',
@@ -848,7 +844,7 @@
         hitsPerPage: 8,
        // filters: "objectID:550585782"
        // filters: 'cProvider:Coursera AND objectID:550585782'
-       filters: filterParam == null ? '' : filterParam
+       filters: fp,
       }
     });
 	
@@ -914,6 +910,8 @@
         //if(filter == null){
         //    filter = "";
         //}
+
+        filter = (filter === '') ? cond : filter + " AND " + cond;
 
         console.log(filter);
         return filter;
@@ -1189,7 +1187,7 @@
         empty: `<div class="hyperlink" style="padding:20px"><div class="text-center">No Results</div></div>`,
         item: 
 		`
-        <div class="col-style" style="display: {{disablerStyle}}">
+        <div class="col-style">
             <div class="edugate-layout-2">
                 <div class="edugate-layout-2-wrapper">
                     <div class="edugate-content">
@@ -1226,7 +1224,6 @@
             hit.cDirectLink = hit.cDirectLink == null ? "#" : hit.cDirectLink;
             
             hit.cPhotoLink = (hit.cPhotoLink == null || hit.cPhotoLink == "" )? "assets/images/categories/categories-default.png" : hit.cPhotoLink
-            hit.disablerStyle = hit.isDisabled === "disabled" ? "none" : "block";
             return hit;
         }
       }
