@@ -1,0 +1,542 @@
+body{
+    background-color: #FFFFFF;
+    overflow:auto;
+}
+#all-container{
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.full#roadMap{
+	width: 1200px;
+    vertical-align:middle;
+   
+}
+.align-container{
+	margin: 5% 0;
+	display: table;
+	table-layout: fixed;
+	
+    float: left;
+}
+.float-middle{
+	display: table-cell;
+	position: relative;
+    vertical-align: middle;
+}
+#work-container{
+	float: left;
+	width: 100%;
+	
+    
+}
+.work{
+	width: 14%;
+    text-align: center;
+    padding:0 1%;
+    font-size:0.85em;
+    font-family: 'PT Sans', sans-serif;
+    color: black;
+    float: left;
+    
+}
+div.work > a{
+    font-size: 1.1em;
+    color: #FFF;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    padding-bottom: 3px;
+    line-height: initial;  /* added */
+}
+div.work > a:after {
+    content: '';
+    display: block;
+    margin: auto;
+    height: 3px;
+    width: 0px;
+    background: transparent;
+    transition: width .5s ease, background-color .5s ease;
+}
+div.work > a:hover:after {
+    width: 100%;
+    background: #6bf5cdc2;
+}
+
+input[type=checkbox]{
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+label {
+    cursor: pointer;
+    width: 50px;
+    height: 25px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+input:checked + label {
+    background: #bada55;
+}
+
+input:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+label:active:after {
+    width: 30px;
+}
+
+
+.node{
+    position: absolute;
+    cursor: pointer !important;
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    transition: all 100ms ease-in;
+    transform: scale(1);
+}
+div.hover > .node{
+    transition: all 200ms ease-in;
+    transform: scale(1.3);
+}
+.node:hover{
+    transition: all 100ms ease-in;
+    transform: scale(1.3);
+}
+#Programming{  
+    left: 52px;
+    top: 461px;
+}
+div.All > #Programming{
+    background-color: #40A629;
+}
+div.ExpertSystem > #Programming,
+div.ExpertComputerVision > #Programming,
+div.ExpertNaturalLanguageProcessing > #Programming,
+div.ExpertApplication > #Programming,
+div.ExpertComputerGames > #Programming,
+div.ExpertRobotics > #Programming{
+    background-color: #82027E;
+}
+
+#OperatingSystem{  
+    left: 184px;
+    top: 69px;
+}
+div.All > #OperatingSystem{
+    background-color: #40A629;
+}
+div.ExpertSystem > #OperatingSystem{
+    background-color: #82027E;
+}
+div.ExpertComputerVision > #OperatingSystem,
+div.ExpertNaturalLanguageProcessing > #OperatingSystem,
+div.ExpertApplication > #OperatingSystem,
+div.ExpertComputerGames > #OperatingSystem,
+div.ExpertRobotics > #OperatingSystem{
+    background-color: #7F7F7F;
+}
+
+#DataStructure{  
+    left: 184px;
+    top: 461px;
+}
+div.All > #DataStructure{
+    background-color: #40A629;
+}
+div.ExpertSystem > #DataStructure,
+div.ExpertComputerVision > #DataStructure,
+div.ExpertNaturalLanguageProcessing > #DataStructure,
+div.ExpertApplication > #DataStructure,
+div.ExpertComputerGames > #DataStructure,
+div.ExpertRobotics > #DataStructure{
+    background-color: #82027E;
+}
+
+
+#Math{  
+    left: 184px;
+    top: 660px;
+}
+div.All > #Math{
+    background-color: #39B54A;
+}
+div.ExpertSystem > #Math{
+    background-color: #7F7F7F;
+}
+div.ExpertComputerVision > #Math,
+div.ExpertNaturalLanguageProcessing > #Math,
+div.ExpertApplication > #Math,
+div.ExpertComputerGames > #Math,
+div.ExpertRobotics > #Math{
+    background-color: #82027E;
+}
+
+#DataScience{  
+    left: 447px;
+    top: 133px;
+}
+div.All > #DataScience{
+    background-color: #C2000C;
+}
+div.ExpertSystem > #DataScience{
+    background-color: #82027E;
+}
+div.ExpertComputerVision > #DataScience,
+div.ExpertComputerGames > #DataScience,
+div.ExpertRobotics > #DataScience{
+    background-color: #7F7F7F;
+}
+div.ExpertNaturalLanguageProcessing > #DataScience{
+	background-color: #169DC6;
+}
+div.ExpertApplication > #DataScience{
+    background-color: #C2000C;
+}
+#MachineLearning{  
+    left: 447px;
+    top: 398px;
+}
+div.All > #MachineLearning{
+    background-color: #C2000C;
+}
+div.ExpertSystem > #MachineLearning,
+div.ExpertApplication > #MachineLearning{
+    background-color: #169DC6;
+}
+div.ExpertNaturalLanguageProcessing > #MachineLearning,
+div.ExpertComputerVision > #MachineLearning,
+div.ExpertRobotics > #MachineLearning{
+    background-color: #82027E;
+}
+div.ExpertComputerGames > #MachineLearning{
+    background-color: #7F7F7F;
+}
+
+
+#ArtificialIntelligence{  
+    left: 447px;
+    top: 656px;
+}
+.All > #ArtificialIntelligence{
+    background-color: #C2000C;
+}
+div.ExpertSystem > #ArtificialIntelligence,
+div.ExpertComputerVision > #ArtificialIntelligence,
+div.ExpertNaturalLanguageProcessing > #ArtificialIntelligence{
+    background-color: #7F7F7F;
+}
+div.ExpertApplication > #ArtificialIntelligence{
+    background-color: #F77B10;
+}
+
+div.ExpertComputerGames > #ArtificialIntelligence,
+div.ExpertRobotics > #ArtificialIntelligence{
+    background-color: #82027E;
+}
+
+#ParallelComputing{
+    left: 711px;
+    top: 69px;
+}
+div.All > #ParallelComputing{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #ParallelComputing{
+    background-color: #82027E;
+}
+div.ExpertComputerVision > #ParallelComputing,
+div.ExpertNaturalLanguageProcessing > #ParallelComputing,
+div.ExpertApplication > #ParallelComputing,
+div.ExpertComputerGames > #ParallelComputing,
+div.ExpertRobotics > #ParallelComputing{
+    background-color: #7F7F7F;
+}
+
+#DataVisualization{
+    left: 711px;
+    top: 133px;
+}
+div.All > #DataVisualization{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #DataVisualization,
+div.ExpertComputerVision > #DataVisualization,
+div.ExpertNaturalLanguageProcessing > #DataVisualization,
+div.ExpertComputerGames > #DataVisualization,
+div.ExpertRobotics > #DataVisualization{
+    background-color: #7F7F7F;
+}
+div.ExpertApplication > #DataVisualization{
+    background-color: #82027E ;
+}
+
+
+#BigData{
+    left: 711px;
+    top: 208px;
+}
+div.All > #BigData{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #BigData,
+div.ExpertComputerVision > #BigData,
+div.ExpertComputerGames > #BigData,
+div.ExpertRobotics > #BigData{
+    background-color: #7F7F7F;
+}
+div.ExpertNaturalLanguageProcessing > #BigData{
+	background-color: #169DC6;
+}
+div.ExpertApplication > #BigData{
+    background-color: #82027E;
+}
+
+#DeepLearning{
+    left: 711px;
+    top: 278px;
+}
+div.All > #DeepLearning{
+    background-color: #FEA621;
+}
+div.ExpertComputerVision > #DeepLearning,
+div.ExpertComputerGames > #DeepLearning,
+div.ExpertRobotics > #DeepLearning,
+div.ExpertNaturalLanguageProcessing > #DeepLearning,
+div.ExpertApplication > #DeepLearning{
+    background-color: #82027E ;
+}
+div.ExpertSystem > #DeepLearning{
+    background-color: #7F7F7F;
+}
+
+#ReinforceLearning{
+    left: 711px;
+    top: 349px;
+}
+div.All > #ReinforceLearning{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #ReinforceLearning,
+div.ExpertNaturalLanguageProcessing > #ReinforceLearning,
+div.ExpertApplication > #ReinforceLearning{
+    background-color: #7F7F7F;
+}
+div.ExpertComputerVision > #ReinforceLearning,
+div.ExpertComputerGames > #ReinforceLearning,
+div.ExpertRobotics > #ReinforceLearning{
+    background-color:  #82027E;
+}
+
+
+
+#GraphicalModel{
+    left: 711px;
+    top: 423px;
+}
+div.All > #GraphicalModel{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #GraphicalModel,
+div.ExpertComputerGames > #GraphicalModel,
+div.ExpertRobotics > #GraphicalModel{
+    background-color: #7F7F7F ;
+}
+div.ExpertNaturalLanguageProcessing > #GraphicalModel,
+div.ExpertComputerVision > #GraphicalModel{
+    background-color: #82027E;
+}
+div.ExpertApplication > #GraphicalModel{
+    background-color: #169DC6;
+}
+
+
+ #IntelligenceAgents{
+    left: 711px;
+    top: 507px;
+}
+.All > #IntelligenceAgents{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #IntelligenceAgents,
+div.ExpertComputerVision > #IntelligenceAgents,
+div.ExpertNaturalLanguageProcessing > #IntelligenceAgents,
+div.ExpertApplication > #IntelligenceAgents{
+    background-color: #7F7F7F;
+}
+
+div.ExpertComputerGames > #IntelligenceAgents,
+div.ExpertRobotics > #IntelligenceAgents{
+    background-color: #82027E;
+}
+
+#CognitiveScience{
+    left: 711px;
+    top: 582px;
+}
+div.All > #CognitiveScience{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #CognitiveScience,
+div.ExpertComputerVision > #CognitiveScience,
+div.ExpertNaturalLanguageProcessing > #CognitiveScience,
+div.ExpertApplication > #CognitiveScience,
+div.ExpertComputerGames > #CognitiveScience{
+    background-color: #7F7F7F;
+}
+
+div.ExpertRobotics > #CognitiveScience{
+    background-color: #169DC6;
+}
+
+#EvolutionComputing{
+    left: 711px;
+    top: 657px;
+}
+div.All > #EvolutionComputing{
+    background-color: #FEA621;
+}
+div.ExpertSystem > #EvolutionComputing,
+div.ExpertComputerVision > #EvolutionComputing,
+div.ExpertNaturalLanguageProcessing > #EvolutionComputing,
+div.ExpertComputerGames > #EvolutionComputing{
+    background-color: #7F7F7F;
+}
+div.ExpertApplication > #EvolutionComputing{
+	background-color: #F77B10;
+}
+div.ExpertRobotics > #EvolutionComputing{
+    background-color: #169DC6;
+}
+
+#CloudSystem{  
+    left: 975px;
+    top: 67px;
+}
+div.All > #CloudSystem{
+    background-color: #4FA1CA;
+}
+div.ExpertSystem > #CloudSystem{
+    background-color: #82027E;
+}
+div.ExpertComputerVision > #CloudSystem,
+div.ExpertNaturalLanguageProcessing > #CloudSystem,
+div.ExpertApplication > #CloudSystem,
+div.ExpertComputerGames > #CloudSystem,
+div.ExpertRobotics > #CloudSystem{
+    background-color: #7F7F7F;
+}
+
+#ComputerVision{  
+    left: 975px;
+    top: 189px;
+}
+div.All > #ComputerVision{
+    background-color: #4FA1CA;
+}
+div.ExpertSystem > #ComputerVision,
+div.ExpertNaturalLanguageProcessing > #ComputerVision,
+div.ExpertApplication > #ComputerVision,
+div.ExpertComputerGames > #ComputerVision,
+div.ExpertRobotics > #ComputerVision{
+    background-color: #7F7F7F;
+}
+div.ExpertComputerVision > #ComputerVision{
+    background-color: #82027E;
+}
+
+
+
+#SpeechRecognition{  
+    left: 972px;
+    top: 298px;
+}
+div.All > #SpeechRecognition{
+    background-color: #4FA1CA;
+}
+div.ExpertSystem > #SpeechRecognition,
+div.ExpertComputerVision > #SpeechRecognition,
+div.ExpertApplication > #SpeechRecognition,
+div.ExpertComputerGames > #SpeechRecognition,
+div.ExpertRobotics > #SpeechRecognition{
+    background-color: #7F7F7F;
+}
+div.ExpertNaturalLanguageProcessing > #SpeechRecognition{
+    background-color: #82027E;
+}
+
+
+#Bioinformatics{  
+    left: 973px;
+    top: 411px;
+}
+div.All > #Bioinformatics{
+    background-color: #4FA1CA;
+}
+div.ExpertSystem > #Bioinformatics,
+div.ExpertComputerVision > #Bioinformatics,
+div.ExpertNaturalLanguageProcessing > #Bioinformatics,
+div.ExpertComputerGames > #Bioinformatics,
+div.ExpertRobotics > #Bioinformatics{
+    background-color: #7F7F7F;
+}
+div.ExpertApplication > #Bioinformatics{
+    background-color: #82027E;
+}
+
+#ComputerGames{  
+    left: 973px;
+    top: 530px;
+}
+div.All > #ComputerGames{
+    background-color: #4FA1CA;
+}
+div.ExpertSystem > #ComputerGames,
+div.ExpertComputerVision > #ComputerGames,
+div.ExpertNaturalLanguageProcessing > #ComputerGames,
+div.ExpertApplication > #ComputerGames,
+div.ExpertRobotics > #ComputerGames{
+    background-color: #7F7F7F;
+}
+div.ExpertComputerGames > #ComputerGames{
+    background-color: #82027E;
+}
+
+#Robotics{  
+    left: 975px;
+    top: 657px;
+}
+div.All > #Robotics{
+    background-color: #4FA1CA;
+}
+div.ExpertSystem > #Robotics,
+div.ExpertComputerVision > #Robotics,
+div.ExpertNaturalLanguageProcessing > #Robotics,
+div.ExpertApplication > #Robotics,
+div.ExpertComputerGames > #Robotics{
+    background-color: #7F7F7F;
+}
+div.ExpertRobotics > #Robotics{
+    background-color: #82027E;
+}
+
