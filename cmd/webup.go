@@ -22,7 +22,16 @@ func main() {
 	// ensure we can instantiate a HttpClient
 	gdoc.ClientMustFromFile("cred.json")
 
-	defaultFolder := "1GXeYQOvNvDvqhtSZW4mOhJCBgcG-d_6r"
+	/*
+		IMPORTANT!!!
+
+		cmsId is the only thing the maintainer has to update
+		the format should be documented somewhere
+
+		TODO: document cms format
+
+		IMPORTANT!!!
+	*/
 	cmsId := "12CkaxfCn4RMs1gmt3tJxtYq-As0F22ssP6XndGhWDsY"
 
 	e := echo.New()
@@ -31,24 +40,6 @@ func main() {
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "${time_rfc3339} ${latency_human} ${status} ${method} ${uri} err=\"${error}\"\n",
 	}))
-
-	e.GET("/announcements/", func(c echo.Context) error {
-		files, err := gdrive.List(defaultFolder)
-		if err != nil {
-			c.Logger().Error(err)
-			_ = c.String(http.StatusBadGateway, "error")
-			return err
-		}
-
-		items := make([]Item, len(files))
-		for i, file := range files {
-			items[i] = Item{
-				Id:    file.Id,
-				Label: file.Name,
-			}
-		}
-		return c.JSON(http.StatusOK, items)
-	})
 
 	e.GET("/:id/", func(c echo.Context) error {
 		id := c.Param("id")
@@ -76,7 +67,39 @@ func main() {
 			return err
 		}
 
-		return c.JSON(http.StatusOK, items[lang])
+		filtered := make([]cms.MenuItem, 0)
+		for _, item := range items {
+			if item.Lang == lang {
+				filtered = append(filtered, item)
+			}
+		}
+		return c.JSON(http.StatusOK, filtered)
+	})
+	c.GET("/list/:id", func(c echo.Context) error {
+		safeId := c.Param("id")
+
+		var files []gdrive.File
+		var err error
+		var driveId string
+
+		driveId, err = cms.ResolveDriveId(cmsId, safeId)
+		if err == nil {
+			files, err = gdrive.List(driveId)
+		}
+		if err != nil {
+			c.Logger().Error(err)
+			_ = c.String(http.StatusBadGateway, "error")
+			return err
+		}
+
+		items := make([]Item, len(files))
+		for i, file := range files {
+			items[i] = Item{
+				Id:    file.Id,
+				Label: file.Name,
+			}
+		}
+		return c.JSON(http.StatusOK, items)
 	})
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
