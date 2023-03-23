@@ -61,10 +61,6 @@ function addLegacyMenu(parent) {
                         label: "互動式地圖",
                         link: "roadmap-interactive-chinese.html",
                     },
-                    {
-                        label: "AI系列課程",
-                        link: "roadmap-course-series-chinese.html",
-                    },
                 ]
             },
         ];
