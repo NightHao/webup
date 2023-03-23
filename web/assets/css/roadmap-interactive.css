@@ -24,6 +24,7 @@ body{
 	display: table-cell;
 	position: relative;
     vertical-align: middle;
+    left: calc(calc(1200px - 100vw) / 2);
 }
 #work-container{
 	float: left;
