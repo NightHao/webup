@@ -58,17 +58,26 @@
 </section>
 <style>
     section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        padding: 8% 16%;
+        padding: 4% 8%;
         font-size: 20px;
+    }
+
+    @media (min-width: 478px) {
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8% 16%;
+        }
     }
 
     section a:visited, section a {
         color: white;
         font-weight: bold;
+    }
+
+    #announcement a {
+        color: inherit !important;
     }
 
     #announcements, #announcements tr, #announcements td {
