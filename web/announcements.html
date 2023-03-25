@@ -94,12 +94,13 @@
 <script src="common.js"></script>
 <script>
     window.addEventListener("load", async () => {
-        const langParam = (new URL(window.location)).searchParams.get("lang");
+        const sp = (new URL(window.location)).searchParams;
+        const langParam = sp.get("lang");
         lang = langParam ? langParam : "en";
-        await load(lang);
+        await load();
 
         const announcements = document.getElementById("announcements");
-        (await (await fetch(api + "/announcements/")).json()).forEach(item => {
+        (await (await fetch(api + "/cms/list/" + sp.get("c_id"))).json()).forEach(item => {
             const sp = new URLSearchParams(window.location.search);
             sp.set("id", item.id);
             const tr = document.createElement("tr");

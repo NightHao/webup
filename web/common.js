@@ -2,11 +2,21 @@ const api = window.location.protocol + "//" + window.location.host + ":6101";
 
 let lang;
 
+function addParamToUrl(url, key, val) {
+    const u = new URL(url);
+    u.searchParams.set(key, val);
+    return u.toString();
+}
+
 function addMenuItem(parent, item) {
     const link = document.createElement("a");
     link.href = item.link;
     link.innerText = item.label;
     link.className = "main-menu";
+    link.href = addParamToUrl(link.href, "lang", lang);
+    if (item.id !== undefined) {
+        link.href = addParamToUrl(link.href, "c_id", item.id);
+    }
     const li = document.createElement("li");
     li.appendChild(link);
     parent.appendChild(li);
