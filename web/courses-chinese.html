@@ -254,62 +254,32 @@
 <header>
     <div class="header-topbar">
         <div class="container">
-            
             <div class="topbar-right pull-right">
-            <!--<div class="group-sign-in"><a href="login.html" class="login">login</a><a href="register.html" class="register">register</a></div> -->
-                <div class="logo pull-left"><a href="index.html"  ><img  src="assets/images/250px-ROC_Ministry_of_Education_Seal.svg" width="40" height="40" style="position:absolute;left:50px; top:6px;" alt=""/></a></div>
-                <div class= "logo pull-left"> <a href="index.html" style="position:absolute;left:100px;">教育部人工智慧技術及應用人才培育計畫</a></div>
-                <div class= "group-sign-in"> <a href="courses.html" onclick="location.href=this.href+'?filter='+filterParam+'&id='+idParam;return false;">English&nbsp&nbsp<a>|<a href="courses-chinese.html" onclick="location.href=this.href+'?filter='+filterParam+'&id='+idParam;return false;">&nbsp&nbsp中文</a></div>
+                <div class="logo pull-left"><a href="index.html"><img
+                        src="assets/images/250px-ROC_Ministry_of_Education_Seal.svg" width="40" height="40"
+                        style="position:absolute;left:50px; top:6px;" alt=""/></a></div>
+                <div class="logo pull-left"><a href="index.html" id="logoText" style="position:absolute;left:100px;">
+                    <!-- added by load() -->
+                </a></div>
+                <div class="group-sign-in"><a href="index.html" style=>English&nbsp&nbsp</a>|<a
+                        href="index-chinese.html" style="font-family: Microsoft JhengHei!important;">&nbsp&nbsp中文</a>
+                </div>
             </div>
         </div>
     </div>
     <div class="header-main homepage-01">
         <div class="container">
             <div class="header-main-wrapper">
-                <div class="navbar-heade">
-                    <div class="logo pull-left"><a href="index-chinese.html" class="header-logo"><img src="assets/images/logo1.png" alt=""/></a></div>
-                
-                    <button type="button" data-toggle="collapse" data-target=".navigation" class="navbar-toggle edugate-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                <div class="navbar-header">
+                    <div class="logo pull-left"><a href="index.html" class="header-logo"><img
+                            src="assets/images/logo1.png" alt=""/></a></div>
+                    <button type="button" data-toggle="collapse" data-target=".navigation"
+                            class="navbar-toggle edugate-navbar"><span class="icon-bar"></span><span
+                            class="icon-bar"></span><span class="icon-bar"></span></button>
                 </div>
                 <nav class="navigation collapse navbar-collapse pull-right">
-                    <ul class="nav-links nav navbar-nav">
-                        <li ><a href="index-chinese.html" class="main-menu">首頁<span></span></a>
-                        </li>
-						
-						<li >
-                            <a href="courses-chinese.html" class="main-menu">課程</a>
-                        </li>
-                        <!-- <li class="dropdown"><a href="javascript:void(0)" class="main-menu">課程<span class="fa fa-angle-down icons-dropdown"></span></a> -->
-                            <!-- <ul class="dropdown-menu edugate-dropdown-menu-1"> -->
-                                <!-- <li><a href="courses-chinese.html" class="link-page">線上英文課程</a></li> -->
-                                <!-- <li><a href="courses-chinese.html" class="link-page">線上中文課程</a></li> -->
-                                <!-- <li><a href="courses-chinese.html" class="link-page">台灣實體課程</a></li> -->
-                                
-                                
-                            <!-- </ul> -->
-                        <!-- </li> -->
-                        
-                       
-
-
-						<li class="dropdown"><a href="javascript:void(0)" class="main-menu">課程地圖<span class="fa fa-angle-down icons-dropdown"></span></a>
-						                            <ul class="dropdown-menu edugate-dropdown-menu-1">
-						                                <li><a href="roadmap-static-chinese.html" class="link-page">靜態式地圖</a></li>
-						                                <li><a href="roadmap-interactive-chinese.html" class="link-page">互動式地圖</a></li>
-
-						                                
-						                                
-						                            </ul>
-                        </li>
-            
-                    <!-- <li class="button-search" class="main-menu"><p class="main-menu"><i class="fa fa-search"></i></p></li> -->
-                        <!-- <div class="nav-search hide"> -->
-                            <!-- <form><input type="text" placeholder="Search" class="searchbox"/> -->
-                                <!-- <button type="submit" class="searchbutton fa fa-search"></button> -->
-                                
-                            <!-- </form> -->
-                        
-                        <!-- </div> -->
+                    <ul id="menu" class="nav-links nav navbar-nav">
+                        <!-- added by load() -->
                     </ul>
                 </nav>
             </div>
@@ -1258,7 +1228,13 @@
 
 
 </script>
-
+<script src="common.js"></script>
+<script>
+    window.addEventListener("load", async () => {
+        lang = "zh";
+        await load();
+    });
+</script>
 <footer style="text-align: center;color: white;background-color: black;padding: 30px;">
   <p>&#169; 2023 IDEA Lab. All Rights Reserved.</p>
   Contact: <a href="mailto:ai.tw@gapp.nthu.edu.tw">ai.tw@gapp.nthu.edu.tw</a>
