@@ -1,6 +1,7 @@
 const api = window.location.protocol + "//" + window.location.host + ":6101";
 
 let lang;
+let toggleLegacyIsShort = false;
 
 function addParamToUrl(url, key, val) {
     const u = new URL(url);
@@ -86,6 +87,9 @@ function addLegacyMenu(parent) {
     dropdown.a.appendChild(arrow);
     const sub = document.createElement("ul");
     sub.className = "dropdown-menu edugate-dropdown-menu-1";
+    if (toggleLegacyIsShort) {
+        sub.style.top = "55px";
+    }
     items[2].dropdown.forEach(subItem => {
         const elem = addMenuItem(sub, subItem);
         elem.li.className = "";
